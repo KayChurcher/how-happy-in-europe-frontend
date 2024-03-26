@@ -47,7 +47,7 @@ st.header('Answer the questions below to find out!')
 
 with st.form(key='params_for_api'):
 
-    cntry  = st.selectbox('What is your country:', # make DICT? (for easier readability)
+    st.session_state.cntry  = st.selectbox('What is your country:', # make DICT? (for easier readability)
                       ('AL', 'AT', 'BE', 'BG', 'CH', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GB',
                        'GE', 'GR', 'HR', 'HU', 'IE', 'IL', 'IS', 'IT', 'LT', 'LU', 'LV', 'ME', 'MK', 'NL',
                        'NO', 'PL', 'RO', 'RS', 'RU', 'SE', 'SI', 'SK', 'TR', 'UA', 'XK'))
@@ -59,9 +59,9 @@ with st.form(key='params_for_api'):
         "Female": 2,
         "Prefer not to say": 9
     }
-    gndr = gndr_mapping[gndr]
+    st.session_state.gndr = gndr_mapping[gndr]
 
-    sclmeet = st.slider('How often meet with friends, relatives, colleagues:', # include explanation labels
+    st.session_state.sclmeet = st.slider('How often meet with friends, relatives, colleagues:', # include explanation labels
                         min_value=1, max_value=7, step=1)
 
     inprdsc = st.selectbox('How many people with whom you can discuss intimate and personal matters:',
@@ -75,7 +75,7 @@ with st.form(key='params_for_api'):
         '7-9': 5,
         '10 or more': 6
     }
-    inprdsc = inprdsc_mapping[inprdsc]
+    st.session_state.inprdsc = inprdsc_mapping[inprdsc]
 
     sclact = st.selectbox('Take part in social activites compared to others of same age:',
                             ('Much less than most', 'Less than most', 'About the same', 'More than most', 'Much more than most'))
@@ -86,30 +86,31 @@ with st.form(key='params_for_api'):
         'More than most': 4,
         'Much more than most': 5
     }
-    sclact = sclact_mapping[sclact]
+    st.session_state.sclact = sclact_mapping[sclact]
 
-    health = st.number_input('Subjective general health:')
-    rlgdgr = st.number_input('How religious are you:')
-    dscrgrp = st.number_input('Member of a group discriminated against in this country:') # 2 buttons y/n
-    ctzcntr = st.number_input('Citizen of country:') # 2 buttons y/n
-    brncntr = st.number_input('Born in country:') # 2 buttons y/n
+    st.session_state.health = st.number_input('Subjective general health:')
+    st.session_state.rlgdgr = st.number_input('How religious are you:')
+    st.session_state.dscrgrp = st.number_input('Member of a group discriminated against in this country:') # 2 buttons y/n
+    st.session_state.ctzcntr = st.number_input('Citizen of country:') # 2 buttons y/n
+    st.session_state.brncntr = st.number_input('Born in country:') # 2 buttons y/n
     # assign number value to buttons
-    happy = st.number_input('How happy are you:')
+    st.session_state.happy = st.number_input('How happy are you:')
 
     st.form_submit_button('Make prediction')
 
 params = dict(
-    cntry=cntry,
-    gndr=gndr,
-    sclmeet=sclmeet,
-    inprdsc=inprdsc,
-    sclact=sclact,
-    health=health,
-    rlgdgr=rlgdgr,
-    dscrgrp=dscrgrp,
-    ctzcntr=ctzcntr,
-    brncntr=brncntr,
-    happy=happy)
+    cntry=st.session_state.cntry,
+    gndr=st.session_state.gndr,
+    sclmeet=st.session_state.sclmeet,
+    inprdsc=st.session_state.inprdsc,
+    sclact=st.session_state.sclact,
+    health=st.session_state.health,
+    rlgdgr=st.session_state.rlgdgr,
+    dscrgrp=st.session_state.dscrgrp,
+    ctzcntr=st.session_state.ctzcntr,
+    brncntr=st.session_state.brncntr,
+    happy=st.session_state.happy
+    )
 
 #wagon_cab_api_url = 'https://taxifare.lewagon.ai/predict'
 response = requests.get(url, params=params)
@@ -135,35 +136,35 @@ st.text(pred)
 
 
 
-"""
-Below is preparation for final model.
-"""
+# """
+# Below is preparation for final model.
+# """
 
-# TODO PROCESS AND MAP FEATURES
+# # TODO PROCESS AND MAP FEATURES
 
-params = dict(
-    stfmjob=stfmjob,
-    trdawrk=trdawrk,
-    jbprtfp=jbprtfp,
-    pfmfdjba=pfmfdjba,
-    dcsfwrka=dcsfwrka,
-    wrkhome=wrkhome,
-    wrklong=wrklong,
-    wrkresp=wrkresp,
-    health=health,
-    stfeco=stfeco,
-    hhmmb=hhmmb,
-    hincfel=hincfel,
-    trstplc=trstplc,
-    sclmeet=sclmeet,
-    hlthhmp=hlthhmp,
-    iphlppl=iphlppl,
-    ipsuces=ipsuces,
-    ipstrgv=ipstrgv,
-    gndr=gndr,
-    cntry=cntry,
-    happy=happy # SHOULD THIS STILL BE HERE??
-)
+# params = dict(
+#     stfmjob=stfmjob,
+#     trdawrk=trdawrk,
+#     jbprtfp=jbprtfp,
+#     pfmfdjba=pfmfdjba,
+#     dcsfwrka=dcsfwrka,
+#     wrkhome=wrkhome,
+#     wrklong=wrklong,
+#     wrkresp=wrkresp,
+#     health=health,
+#     stfeco=stfeco,
+#     hhmmb=hhmmb,
+#     hincfel=hincfel,
+#     trstplc=trstplc,
+#     sclmeet=sclmeet,
+#     hlthhmp=hlthhmp,
+#     iphlppl=iphlppl,
+#     ipsuces=ipsuces,
+#     ipstrgv=ipstrgv,
+#     gndr=gndr,
+#     cntry=cntry,
+#     happy=happy # SHOULD THIS STILL BE HERE??
+# )
 
 # FEATURES_DICT = {
 #     "stfmjob":  "How satisfied are you in your main job",
