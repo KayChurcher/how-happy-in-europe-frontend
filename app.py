@@ -45,81 +45,219 @@ st.header('Answer the questions below to find out!')
 #   - create a params dict based on the user's input
 #   - finally call your API using the requests package
 
-with st.form(key='params_for_api'):
+# Initialize session state if not already set
+if 'current_question' not in st.session_state:
+    st.session_state.current_question = 0
 
-    st.session_state.cntry  = st.selectbox('What is your country:', # make DICT? (for easier readability)
+# Define your questions and answers
+# questions = [
+#     "What is your country?",
+#     "What is your gender?",
+#     "How often do you meet with friends, relatives, colleagues?"
+# ]
+
+# Display the current question
+if st.session_state.current_question == 0:
+    with st.form("question_form"):
+        st.session_state.cntry  = st.selectbox('What is your country:', # make DICT? (for easier readability)
                       ('AL', 'AT', 'BE', 'BG', 'CH', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GB',
                        'GE', 'GR', 'HR', 'HU', 'IE', 'IL', 'IS', 'IT', 'LT', 'LU', 'LV', 'ME', 'MK', 'NL',
                        'NO', 'PL', 'RO', 'RS', 'RU', 'SE', 'SI', 'SK', 'TR', 'UA', 'XK'))
+        submit = st.form_submit_button("Next")
+        if submit:
+            st.session_state.current_question += 1
+            st.experimental_rerun()
 
-    gndr = st.radio('What is your gender:',
+elif st.session_state.current_question == 1:
+    with st.form("question_form"):
+        gndr = st.radio('What is your gender:',
                     ['Male', 'Female', 'Prefer not to say'])
-    gndr_mapping = {
-        "Male": 1,
-        "Female": 2,
-        "Prefer not to say": 9
-    }
-    st.session_state.gndr = gndr_mapping[gndr]
+        gndr_mapping = {
+            "Male": 1,
+            "Female": 2,
+            "Prefer not to say": 9
+        }
+        st.session_state.gndr = gndr_mapping[gndr]
+        submit = st.form_submit_button("Next")
+        if submit:
+            st.session_state.current_question += 1
+            st.experimental_rerun()
 
-    st.session_state.sclmeet = st.slider('How often meet with friends, relatives, colleagues:', # include explanation labels
+elif st.session_state.current_question == 2:
+    with st.form("question_form"):
+        st.session_state.sclmeet = st.slider('How often meet with friends, relatives, colleagues:', # include explanation labels
                         min_value=1, max_value=7, step=1)
+        submit = st.form_submit_button("Next")
+        if submit:
+            st.session_state.current_question += 1
+            st.experimental_rerun()
 
-    inprdsc = st.selectbox('How many people with whom you can discuss intimate and personal matters:',
+elif st.session_state.current_question == 3:
+    with st.form("question_form"):
+        inprdsc = st.selectbox('How many people with whom you can discuss intimate and personal matters:',
                             ('None', '1', '2', '3', '4-6', '7-9', '10 or more')) # THE CORRESPONDING VALUES ARE 0-6
-    inprdsc_mapping = {
-        'None': 0,
-        '1': 1,
-        '2': 2,
-        '3': 3,
-        '4-6': 4,
-        '7-9': 5,
-        '10 or more': 6
-    }
-    st.session_state.inprdsc = inprdsc_mapping[inprdsc]
+        inprdsc_mapping = {
+            'None': 0,
+            '1': 1,
+            '2': 2,
+            '3': 3,
+            '4-6': 4,
+            '7-9': 5,
+            '10 or more': 6
+        }
+        st.session_state.inprdsc = inprdsc_mapping[inprdsc]
+        submit = st.form_submit_button("Next")
+        if submit:
+            st.session_state.current_question += 1
+            st.experimental_rerun()
 
-    sclact = st.selectbox('Take part in social activites compared to others of same age:',
+elif st.session_state.current_question == 4:
+    with st.form("question_form"):
+        sclact = st.selectbox('Take part in social activites compared to others of same age:',
                             ('Much less than most', 'Less than most', 'About the same', 'More than most', 'Much more than most'))
-    sclact_mapping = {
-        'Much less than most': 1,
-        'Less than most': 2,
-        'About the same': 3,
-        'More than most': 4,
-        'Much more than most': 5
-    }
-    st.session_state.sclact = sclact_mapping[sclact]
+        sclact_mapping = {
+            'Much less than most': 1,
+            'Less than most': 2,
+            'About the same': 3,
+            'More than most': 4,
+            'Much more than most': 5
+        }
+        st.session_state.sclact = sclact_mapping[sclact]
+        submit = st.form_submit_button("Next")
+        if submit:
+            st.session_state.current_question += 1
+            st.experimental_rerun()
 
-    st.session_state.health = st.number_input('Subjective general health:')
-    st.session_state.rlgdgr = st.number_input('How religious are you:')
-    st.session_state.dscrgrp = st.number_input('Member of a group discriminated against in this country:') # 2 buttons y/n
-    st.session_state.ctzcntr = st.number_input('Citizen of country:') # 2 buttons y/n
-    st.session_state.brncntr = st.number_input('Born in country:') # 2 buttons y/n
-    # assign number value to buttons
-    st.session_state.happy = st.number_input('How happy are you:')
+elif st.session_state.current_question == 5:
+    with st.form("question_form"):
+        st.session_state.health = st.number_input('Subjective general health:')
+        submit = st.form_submit_button("Next")
+        if submit:
+            st.session_state.current_question += 1
+            st.experimental_rerun()
 
-    st.form_submit_button('Make prediction')
+elif st.session_state.current_question == 6:
+    with st.form("question_form"):
+        st.session_state.rlgdgr = st.number_input('How religious are you:')
+        submit = st.form_submit_button("Next")
+        if submit:
+            st.session_state.current_question += 1
+            st.experimental_rerun()
 
-params = dict(
-    cntry=st.session_state.cntry,
-    gndr=st.session_state.gndr,
-    sclmeet=st.session_state.sclmeet,
-    inprdsc=st.session_state.inprdsc,
-    sclact=st.session_state.sclact,
-    health=st.session_state.health,
-    rlgdgr=st.session_state.rlgdgr,
-    dscrgrp=st.session_state.dscrgrp,
-    ctzcntr=st.session_state.ctzcntr,
-    brncntr=st.session_state.brncntr,
-    happy=st.session_state.happy
-    )
+elif st.session_state.current_question == 7:
+    with st.form("question_form"):
+        st.session_state.dscrgrp = st.number_input('Member of a group discriminated against in this country:')
+        submit = st.form_submit_button("Next")
+        if submit:
+            st.session_state.current_question += 1
+            st.experimental_rerun()
 
-#wagon_cab_api_url = 'https://taxifare.lewagon.ai/predict'
-response = requests.get(url, params=params)
+elif st.session_state.current_question == 8:
+    with st.form("question_form"):
+        st.session_state.ctzcntr = st.number_input('Citizen of country:')
+        submit = st.form_submit_button("Next")
+        if submit:
+            st.session_state.current_question += 1
+            st.experimental_rerun()
 
-prediction = response.json()
+elif st.session_state.current_question == 9:
+    with st.form("question_form"):
+        st.session_state.brncntr = st.number_input('Born in country:')
+        submit = st.form_submit_button("Next")
+        if submit:
+            st.session_state.current_question += 1
+            st.experimental_rerun()
 
-pred = prediction#['happy'] # STATE OF HAPPINESS
+elif st.session_state.current_question == 10:
+    with st.form("question_form"):
+        st.session_state.happy = st.number_input('How happy are you:')
+        submit = st.form_submit_button("Next")
+        if submit:
+            st.session_state.current_question += 1
+            st.experimental_rerun()
 
-st.text(pred)
+elif st.session_state.current_question == 11:
+    with st.form("prediction_form"):
+        submit = st.form_submit_button("Submit")
+        if submit:
+            st.write("Thank you for completing the questionnaire!")
+            st.session_state.current_question = 0 # Reset for next time
+
+            params = dict(
+                cntry=st.session_state.cntry,
+                gndr=st.session_state.gndr,
+                sclmeet=st.session_state.sclmeet,
+                inprdsc=st.session_state.inprdsc,
+                sclact=st.session_state.sclact,
+                health=st.session_state.health,
+                rlgdgr=st.session_state.rlgdgr,
+                dscrgrp=st.session_state.dscrgrp,
+                ctzcntr=st.session_state.ctzcntr,
+                brncntr=st.session_state.brncntr,
+                happy=st.session_state.happy
+                )
+
+            #wagon_cab_api_url = 'https://taxifare.lewagon.ai/predict'
+            response = requests.get(url, params=params)
+
+            prediction = response.json()
+
+            pred = prediction#['happy'] # STATE OF HAPPINESS
+
+            st.text(pred)
+
+
+# with st.form(key='params_for_api'):
+
+    # st.session_state.cntry  = st.selectbox('What is your country:', # make DICT? (for easier readability)
+    #                   ('AL', 'AT', 'BE', 'BG', 'CH', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GB',
+    #                    'GE', 'GR', 'HR', 'HU', 'IE', 'IL', 'IS', 'IT', 'LT', 'LU', 'LV', 'ME', 'MK', 'NL',
+    #                    'NO', 'PL', 'RO', 'RS', 'RU', 'SE', 'SI', 'SK', 'TR', 'UA', 'XK'))
+
+    # gndr = st.radio('What is your gender:',
+    #                 ['Male', 'Female', 'Prefer not to say'])
+    # gndr_mapping = {
+    #     "Male": 1,
+    #     "Female": 2,
+    #     "Prefer not to say": 9
+    # }
+    # st.session_state.gndr = gndr_mapping[gndr]
+
+    # st.session_state.sclmeet = st.slider('How often meet with friends, relatives, colleagues:', # include explanation labels
+    #                     min_value=1, max_value=7, step=1)
+
+    # inprdsc = st.selectbox('How many people with whom you can discuss intimate and personal matters:',
+    #                         ('None', '1', '2', '3', '4-6', '7-9', '10 or more')) # THE CORRESPONDING VALUES ARE 0-6
+    # inprdsc_mapping = {
+    #     'None': 0,
+    #     '1': 1,
+    #     '2': 2,
+    #     '3': 3,
+    #     '4-6': 4,
+    #     '7-9': 5,
+    #     '10 or more': 6
+    # }
+    # st.session_state.inprdsc = inprdsc_mapping[inprdsc]
+
+    # sclact = st.selectbox('Take part in social activites compared to others of same age:',
+    #                         ('Much less than most', 'Less than most', 'About the same', 'More than most', 'Much more than most'))
+    # sclact_mapping = {
+    #     'Much less than most': 1,
+    #     'Less than most': 2,
+    #     'About the same': 3,
+    #     'More than most': 4,
+    #     'Much more than most': 5
+    # }
+    # st.session_state.sclact = sclact_mapping[sclact]
+
+    # st.session_state.health = st.number_input('Subjective general health:')
+    # st.session_state.rlgdgr = st.number_input('How religious are you:')
+    # st.session_state.dscrgrp = st.number_input('Member of a group discriminated against in this country:') # 2 buttons y/n
+    # st.session_state.ctzcntr = st.number_input('Citizen of country:') # 2 buttons y/n
+    # st.session_state.brncntr = st.number_input('Born in country:') # 2 buttons y/n
+    # st.session_state.happy = st.number_input('How happy are you:')
+
+    # st.form_submit_button('Make prediction')
 
 # TODO: retrieve the results
 #   - add a little check if you got an ok response (status code 200) or something else
