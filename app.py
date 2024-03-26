@@ -65,30 +65,145 @@ if st.session_state.current_question == 0:
             st.session_state.current_question += 1
             st.experimental_rerun()
 
-# elif st.session_state.current_question == 1:
-#     with st.form("question_form"):
-#         gndr = st.radio('What is your gender:',
-#                     ['Male', 'Female', 'Prefer not to say'])
-#         gndr_mapping = {
-#             "Male": 1,
-#             "Female": 2,
-#             "Prefer not to say": 6 # UPDATED GNDR FROM JSON
-#         }
-#         st.session_state.gndr = gndr_mapping[gndr]
-#         submit = st.form_submit_button("Next")
-#         if submit:
-#             st.session_state.current_question += 1
-#             st.experimental_rerun()
 
-elif st.session_state.current_question == 2:
+# Job Questions - 5 on 1 page
+elif st.session_state.current_question == 1:
     with st.form("question_form"):
-        st.session_state.sclmeet = st.slider('How often meet with friends, relatives, colleagues:', # include explanation labels
-                        min_value=1, max_value=7, step=1)
+
+        # 1 job satisfaction
+        stfmjob = st.select_slider(
+                    'How satisfied are you in your main job?',
+                    options=['Extremely dissatisfied', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'Extremely satisfied'])
+        stfmjob_mapping = {
+            "Extremely dissatisfied": 0,
+            "1": 1,
+            "2": 2,
+            "3": 3,
+            "4": 4,
+            "5": 5,
+            "6": 6,
+            "7": 7,
+            "8": 8,
+            "9": 9,
+            "Extremely satisfied": 10,
+            "Prefer not to say": 66    # add toggle with prefer not to say option?
+            }
+
+        pnts_on = st.toggle('Prefer not to say', key="disabled")
+
+        if pnts_on:
+            st.session_state.gstfmjob = stfmjob_mapping[pnts_on]
+            stfmjob = st.select_slider(disabled=st.session_state.disabled) # visibility of stfmjob = off
+        else:
+            st.session_state.gstfmjob = stfmjob_mapping[stfmjob]
+
+        # 2 job start/finish
+        dcsfwrka = st.selectbox(
+                    'In your current job can you decide the start and/or finish time of your work?',
+                    options=["Not at all", "To some extent", "Completely", "Prefer not to say"])
+        dcsfwrka_mapping = {
+            "Not at all": 1,
+            "To some extent": 2,
+            "Completely": 3,
+            "Prefer not to say": 6
+        }
+        st.session_state.dcsfwrka = dcsfwrka_mapping[dcsfwrka]
+
+        # 3 work from home
+        wrkhome = st.selectbox(
+                    'How often do you work from home or from a place of your choice?',
+                    options=["Every day", "Several times a week", "Several times a month", "Once a month", "Less often", "Never", "Prefer not to say"])
+        wrkhome_mapping = {
+            "Every day": 1,
+            "Several times a week": 2,
+            "Several times a month": 3,
+            "Once a month": 4,
+            "Less often": 5,
+            "Never": 6,
+            "Prefer not to say": 66
+        }
+        st.session_state.wrkhome = wrkhome_mapping[wrkhome]
+
+        # 4 work after hours
+        wrklong = st.selectbox(
+                    'How often are employees expected to work overtime?',
+                    options=["Every day", "Several times a week", "Several times a month", "Once a month", "Less often", "Never", "I don't work in an organisation", "Prefer not to say"])
+        wrklong_mapping = {
+            "Every day": 1,
+            "Several times a week": 2,
+            "Several times a month": 3,
+            "Once a month": 4,
+            "Less often": 5,
+            "Never": 6,
+            "I don't work in an organisation": 55,
+            "Prefer not to say": 66
+        }
+        st.session_state.wrklong = wrklong_mapping[wrklong]
+
+        # 5 contact after work hours
+        wrkresp = st.selectbox(
+                    'How often are employees expected to work overtime?',
+                    options=["Every day", "Several times a week", "Several times a month", "Once a month", "Less often", "Never", "Prefer not to say"])
+        wrkresp_mapping = {
+            "Every day": 1,
+            "Several times a week": 2,
+            "Several times a month": 3,
+            "Once a month": 4,
+            "Less often": 5,
+            "Never": 6,
+            "Prefer not to say": 66
+        }
+        st.session_state.wrkresp = wrkresp_mapping[wrkresp]
+
         submit = st.form_submit_button("Next")
         if submit:
             st.session_state.current_question += 1
             st.experimental_rerun()
 
+
+# Social Questions - 2 on 1 page
+elif st.session_state.current_question == 2:
+    with st.form("question_form"):
+
+        # 1 Socially meet
+        sclmeet = st.selectbox(
+                        'How often do you meet with friends, relatives or colleagues?',
+                        options=["Every day", "Several times a week", "Several times a month", "Once a month", "Less often", "Never", "Prefer not to say"])
+        sclmeet_mapping = {
+            "Every day": 7,
+            "Several times a week": 6,
+            "Once a week": 5,
+            "Several times a month": 4,
+            "Once a month": 3,
+            "Less often": 2,
+            "Never": 1
+        }
+        st.session_state.sclmeet = sclmeet_mapping[sclmeet]
+
+        # 2 Social Activities
+        sclact = st.select_slider(
+                        'How often do you take part in social activities compared to others your age?',
+                        options=["Much less than most", "Less than most", "About the same", "More than most", "Much more than most"])
+        sclact_mapping = {
+            "Much less than most": 1,
+            "Less than most": 2,
+            "About the same": 3,
+            "More than most": 4,
+            "Much more than most": 5
+        }
+        st.session_state.sclact = sclact_mapping[sclact]
+
+        submit = st.form_submit_button("Next")
+        if submit:
+            st.session_state.current_question += 1
+            st.experimental_rerun()
+
+
+#     "trdawrk":  "Too tired after work to enjoy things like doing at home, how often",
+#     "jbprtfp":  "Job prevents you from giving time to partner/family, how often",
+#     "pfmfdjba": "Partner/family fed up with pressure of your job, how often",
+
+# Job Affecting Social Life Questions - 3 on 1 page
 elif st.session_state.current_question == 3:
     with st.form("question_form"):
         inprdsc = st.selectbox('How many people with whom you can discuss intimate and personal matters:',
@@ -108,70 +223,41 @@ elif st.session_state.current_question == 3:
             st.session_state.current_question += 1
             st.experimental_rerun()
 
-elif st.session_state.current_question == 4:
-    with st.form("question_form"):
-        sclact = st.selectbox('Take part in social activites compared to others of same age:',
-                            ('Much less than most', 'Less than most', 'About the same', 'More than most', 'Much more than most'))
-        sclact_mapping = {
-            'Much less than most': 1,
-            'Less than most': 2,
-            'About the same': 3,
-            'More than most': 4,
-            'Much more than most': 5
-        }
-        st.session_state.sclact = sclact_mapping[sclact]
-        submit = st.form_submit_button("Next")
-        if submit:
-            st.session_state.current_question += 1
-            st.experimental_rerun()
+# elif st.session_state.current_question == 4:
+#     with st.form("question_form"):
+#         sclact = st.selectbox('Take part in social activites compared to others of same age:',
+#                             ('Much less than most', 'Less than most', 'About the same', 'More than most', 'Much more than most'))
+#         sclact_mapping = {
+#             'Much less than most': 1,
+#             'Less than most': 2,
+#             'About the same': 3,
+#             'More than most': 4,
+#             'Much more than most': 5
+#         }
+#         st.session_state.sclact = sclact_mapping[sclact]
+#         submit = st.form_submit_button("Next")
+#         if submit:
+#             st.session_state.current_question += 1
+#             st.experimental_rerun()
 
-elif st.session_state.current_question == 5:
-    with st.form("question_form"):
-        st.session_state.health = st.number_input('Subjective general health:')
-        submit = st.form_submit_button("Next")
-        if submit:
-            st.session_state.current_question += 1
-            st.experimental_rerun()
+# elif st.session_state.current_question == 5:
+#     with st.form("question_form"):
+#         st.session_state.health = st.number_input('Subjective general health:')
+#         submit = st.form_submit_button("Next")
+#         if submit:
+#             st.session_state.current_question += 1
+#             st.experimental_rerun()
 
-elif st.session_state.current_question == 6:
-    with st.form("question_form"):
-        st.session_state.rlgdgr = st.number_input('How religious are you:')
-        submit = st.form_submit_button("Next")
-        if submit:
-            st.session_state.current_question += 1
-            st.experimental_rerun()
+# elif st.session_state.current_question == 6:
+#     with st.form("question_form"):
+#         st.session_state.rlgdgr = st.number_input('How religious are you:')
+#         submit = st.form_submit_button("Next")
+#         if submit:
+#             st.session_state.current_question += 1
+#             st.experimental_rerun()
 
-elif st.session_state.current_question == 7:
-    with st.form("question_form"):
-        st.session_state.dscrgrp = st.number_input('Member of a group discriminated against in this country:')
-        submit = st.form_submit_button("Next")
-        if submit:
-            st.session_state.current_question += 1
-            st.experimental_rerun()
 
-elif st.session_state.current_question == 8:
-    with st.form("question_form"):
-        st.session_state.ctzcntr = st.number_input('Citizen of country:')
-        submit = st.form_submit_button("Next")
-        if submit:
-            st.session_state.current_question += 1
-            st.experimental_rerun()
 
-elif st.session_state.current_question == 9:
-    with st.form("question_form"):
-        st.session_state.brncntr = st.number_input('Born in country:')
-        submit = st.form_submit_button("Next")
-        if submit:
-            st.session_state.current_question += 1
-            st.experimental_rerun()
-
-elif st.session_state.current_question == 10:
-    with st.form("question_form"):
-        st.session_state.happy = st.number_input('How happy are you:')
-        submit = st.form_submit_button("Next")
-        if submit:
-            st.session_state.current_question += 1
-            st.experimental_rerun()
 
 # display final result
 elif st.session_state.current_question == 11:
@@ -232,29 +318,6 @@ elif st.session_state.current_question == 11:
 
 # TODO PROCESS AND MAP FEATURES
 
-# params = dict(
-#     stfmjob=st.session_state.stfmjob,
-#     trdawrk=st.session_state.trdawrk,
-#     jbprtfp=st.session_state.jbprtfp,
-#     pfmfdjba=st.session_state.pfmfdjba,
-#     dcsfwrka=st.session_state.dcsfwrka,
-#     wrkhome=st.session_state.wrkhome,
-#     wrklong=st.session_state.wrklong,
-#     wrkresp=st.session_state.wrkresp,
-#     health=st.session_state.health,
-#     stfeco=st.session_state.stfeco,
-#     hhmmb=st.session_state.hhmmb,
-#     hincfel=st.session_state.hincfel,
-#     trstplc=st.session_state.trstplc,
-#     sclmeet=st.session_state.sclmeet,
-#     hlthhmp=st.session_state.hlthhmp,
-#     iphlppl=st.session_state.iphlppl,
-#     ipsuces=st.session_state.ipsuces,
-#     ipstrgv=st.session_state.ipstrgv,
-#     gndr=st.session_state.gndr,
-#     cntry=st.session_state.cntry,
-#     happy=st.session_state.happy # SHOULD THIS STILL BE HERE??
-# )
 
 # FEATURES_DICT = {
 #     "gndr"   :  "Gender",
