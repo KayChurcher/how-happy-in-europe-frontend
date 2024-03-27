@@ -15,11 +15,7 @@ BASE_URI = BASE_URI if BASE_URI.endswith('/') else BASE_URI + '/'
 # Define the url to be used by requests.get to get a prediction (adapt if needed)
 url = BASE_URI + 'predict'
 
-# TODO EDIT URL FOR FINAL MODEL
 
-# """
-# Below is preparation for final model.
-# """
 
 # ADD TITLES AND INTRODUCTION
 st.title('How Happy Are You?')
@@ -32,6 +28,7 @@ if 'current_question' not in st.session_state:
     st.session_state.current_question = 0
 
 
+
 # Start Page
 if st.session_state.current_question == 0:
     with st.form("question_form"):
@@ -42,7 +39,6 @@ if st.session_state.current_question == 0:
             st.experimental_rerun()
 
 
-
 # Gender and Country Questions - 2 on 1 page
 if st.session_state.current_question == 1:
     with st.form("question_form"):
@@ -51,20 +47,30 @@ if st.session_state.current_question == 1:
         # 1 Country
         st.markdown("##### What country do you live in?")
         cntry = st.selectbox('What country do you live in?',
-                            ('AL  Albania', 'AT  Austria', 'BE  Belgium', 'BG  Bulgaria', 'CH  Switzerland', 'CY  Cyprus',
-                            'CZ  Czechia', 'DE  Germany', 'DK  Denmark', 'EE  Estonia', 'ES  Spain', 'FI  Finland', 'FR  France', 'GB  United Kingdom',
-                            'GE  Georgia', 'GR  Greece', 'HR  Croatia', 'HU  Hungary', 'IE  Ireland', 'IL  Israel', 'IS  Iceland',
-                            'IT  Italy', 'LT  Lithuania', 'LU  Luxembourg', 'LV  Latvia', 'ME  Montenegro', 'MK  North Macedonia', 'NL  Netherlands',
-                            'NO  Norway', 'PL  Poland', 'PT  Portugal', 'RO  Romania', 'RS  Serbia', 'RU  Russian Federation',
-                            'SE  Sweden', 'SI  Slovenia', 'SK  Slovakia', 'TR  Turkey', 'UA  Ukraine', 'XK  Kosovo'),
+                            ('BE  Belgium', 'BG  Bulgaria',
+                            'CH  Switzerland', 'CZ	Czechia',
+                            'EE  Estonia', 'FI  Finland',
+                            'FR  France', 'GB  United Kingdom',
+                            'GR  Greece', 'HR  Croatia',
+                            'HU  Hungary', 'IE  Ireland',
+                            'IS  Iceland', 'IT  Italy',
+                            'LT  Lithuania', 'ME  Montenegro',
+                            'MK  North Macedonia', 'NL  Netherlands',
+                            'NO  Norway', 'PT  Portugal',
+                            'SI  Slovenia', 'SK  Slovakia'),
                             label_visibility="collapsed")
         cntry_mapping = {
-                        'AL  Albania': 'AL', 'AT  Austria': 'AT', 'BE  Belgium': 'BE', 'BG  Bulgaria': 'BG', 'CH  Switzerland': 'CH', 'CY  Cyprus': 'CY',
-                        'CZ  Czechia': 'CZ', 'DE  Germany': 'DE', 'DK  Denmark': 'DK', 'EE  Estonia': 'EE', 'ES  Spain': 'ES', 'FI  Finland': 'FI', 'FR  France': 'FR', 'GB  United Kingdom': 'GB',
-                        'GE  Georgia': 'GE', 'GR  Greece': 'GR', 'HR  Croatia': 'HR', 'HU  Hungary': 'HU', 'IE  Ireland': 'IE', 'IL  Israel': 'IL', 'IS  Iceland': 'IS',
-                        'IT  Italy': 'IT', 'LT  Lithuania': 'LT', 'LU  Luxembourg': 'LU', 'LV  Latvia': 'LV', 'ME  Montenegro': 'ME', 'MK  North Macedonia': 'MK', 'NL  Netherlands': 'NL',
-                        'NO  Norway': 'NO', 'PL  Poland': 'PL', 'PT  Portugal': 'PT', 'RO  Romania': 'RO', 'RS  Serbia': 'RS', 'RU  Russian Federation': 'RU',
-                        'SE  Sweden': 'SE', 'SI  Slovenia': 'SI', 'SK  Slovakia': 'SK', 'TR  Turkey': 'TK', 'UA  Ukraine': 'UA', 'XK  Kosovo': 'XK'
+                        'BE  Belgium': 'BE', 'BG  Bulgaria': 'BG',
+                        'CH  Switzerland': 'CH', 'CZ  Czechia': 'CZ',
+                        'EE  Estonia': 'EE', 'FI  Finland': 'FI',
+                        'FR  France': 'FR', 'GB  United Kingdom': 'GB',
+                        'GR  Greece': 'GR', 'HR  Croatia': 'HR',
+                        'HU  Hungary': 'HU', 'IE  Ireland': 'IE',
+                        'IS  Iceland': 'IS', 'IT  Italy': 'IT',
+                        'LT  Lithuania': 'LT', 'ME  Montenegro': 'ME',
+                        'MK  North Macedonia': 'MK', 'NL  Netherlands': 'NL',
+                        'NO  Norway': 'NO', 'PT  Portugal': 'PT',
+                        'SI  Slovenia': 'SI', 'SK  Slovakia': 'SK'
                         }
         st.session_state.cntry = cntry_mapping[cntry]
 
@@ -89,7 +95,6 @@ if st.session_state.current_question == 1:
             st.experimental_rerun()
 
 
-
 # Job Questions - 5 on 1 page
 elif st.session_state.current_question == 2:
     with st.form("question_form"):
@@ -97,12 +102,6 @@ elif st.session_state.current_question == 2:
 
         if "disabled" not in st.session_state:
             st.session_state.disabled = False
-
-        # def switchToggle():
-        #     if st.session_state.disabled == False:
-        #         st.session_state.disabled = True
-        #     else:
-        #         st.session_state.disabled = False
 
         # 1 job satisfaction
         st.markdown("##### How satisfied are you in your main job?")
@@ -132,11 +131,8 @@ elif st.session_state.current_question == 2:
             "Prefer not to say": 66    # add toggle with prefer not to say option?
             }
 
-
         if pnts_on:
-            st.session_state.stfmjob = stfmjob_mapping[pnts_on]
-            #stfmjob.session_state.disabled
-            #stfmjob = st.select_slider(disabled=st.session_state.disabled) # visibility of stfmjob = off
+            st.session_state.stfmjob = 66
         else:
             st.session_state.stfmjob = stfmjob_mapping[stfmjob]
 
@@ -202,9 +198,9 @@ elif st.session_state.current_question == 2:
 
         # 5 contact after work hours
         st.markdown(" ")
-        st.markdown("##### How often are employees expected to work overtime?")
+        st.markdown("##### How often are employees expected to be responsive outside working hours?")
         wrkresp = st.selectbox(
-                    'How often are employees expected to work overtime?',
+                    'How often are employees expected to be responsive outside working hours?',
                     options=["Never", "Less often", "Once a month", "Several times a month", "Several times a week", "Every day", "Prefer not to say"],
                     label_visibility="collapsed")
         wrkresp_mapping = {
@@ -228,7 +224,6 @@ elif st.session_state.current_question == 2:
         if submit:
             st.session_state.current_question += 1
             st.experimental_rerun()
-
 
 
 # Social Questions - 2 on 1 page
@@ -283,7 +278,6 @@ elif st.session_state.current_question == 3:
         if submit:
             st.session_state.current_question += 1
             st.experimental_rerun()
-
 
 
 # Job Affecting Social Life Questions - 3 on 1 page
@@ -354,7 +348,6 @@ elif st.session_state.current_question == 4:
             st.experimental_rerun()
 
 
-
 # Health Questions - 2 on 1 page
 elif st.session_state.current_question == 5:
     with st.form("question_form"):
@@ -403,7 +396,6 @@ elif st.session_state.current_question == 5:
         if submit:
             st.session_state.current_question += 1
             st.experimental_rerun()
-
 
 
 # Household and Income Questions - 3 on 1 page
@@ -467,7 +459,6 @@ elif st.session_state.current_question == 6:
         if submit:
             st.session_state.current_question += 1
             st.experimental_rerun()
-
 
 
 # Societal Values Questions - 4 on 1 page
@@ -570,22 +561,6 @@ elif st.session_state.current_question == 7:
 
 
 
-# TODO MAKE START PAGE / WELCOME PAGE BEFORE QUESTIONNAIRE
-
-
-# TODO Page Formatting
-#  place previous and next buttons better on page
-#  MAKE TOGGLE WORK
-#  REFORMAT jobs questions - all sliders?
-
-
-# Final Page
-# TODO INPLEMENT PROGRESS BAR - for loading response
-#      FIRST TIME SLOW BC IT'S IMPLEMENTING THE CONTAINER
-# TODO collapse / hide submit button after submitting
-
-
-
 # display final result
 elif st.session_state.current_question == 8:
     with st.form("prediction_form"):
@@ -626,88 +601,3 @@ elif st.session_state.current_question == 8:
             pred = prediction#['happy'] # STATE OF HAPPINESS
 
             st.text(pred)
-
-
-
-
-# TODO: retrieve the results
-#   - add a little check if you got an ok response (status code 200) or something else
-#   - retrieve the prediction from the JSON
-
-# TODO: display the prediction in some fancy way to the user
-
-# TODO: [OPTIONAL] maybe you can add some other pages?
-#   - some statistical data you collected in graphs
-#   - description of your product
-#   - a 'Who are we?'-page
-
-
-
-
-
-# TODO PROCESS AND MAP FEATURES
-
-# happy=st.session_state.happy # <- SHOULD THIS STILL BE HERE??
-# FEATURES_DICT = {
-#     "gndr"   :  "Gender",
-#     "cntry"  :  "Country",
-
-#     "stfmjob":  "How satisfied are you in your main job",
-#     "dcsfwrka": "Current job: can decide time start/finish work",
-#     "wrkhome":  "Work from home or place of choice, how often",
-#     "wrklong":  "Employees expected to work overtime, how often",
-#     "wrkresp":  "Employees expected to be responsive outside working hours, how often",
-
-#     "sclmeet":  "How often socially meet with friends, relatives or colleagues",
-#     "sclact":   "Take part in social activities compared to others of same age",
-
-#     "trdawrk":  "Too tired after work to enjoy things like doing at home, how often",
-#     "jbprtfp":  "Job prevents you from giving time to partner/family, how often",
-#     "pfmfdjba": "Partner/family fed up with pressure of your job, how often",
-
-#     "health":   "Subjective general health",
-#     "hlthhmp":  "Hampered in daily activities by illness/disability/infirmity/mental problem",
-
-#     "hhmmb":    "Number of people living regularly as member of household",
-#     "hincfel":  "Feeling about household's income nowadays",
-#     "stfeco":   "How satisfied with present state of economy in country",
-
-#     "ipsuces":  "Important to be successful and that people recognise achievements",
-#     "iphlppl":  "Important to help people and care for others well-being",
-#     "ipstrgv":  "Important that government is strong and ensures safety",
-#     "trstplc":  "Trust in the police",
-
-# #    "happy":    "Happiness"
-# }
-
-
-# FEATURES_DICT = {
-#     "cntry",
-#     "gndr",
-
-#     "stfmjob",
-#     "dcsfwrka",
-#     "wrkhome",
-#     "wrklong",
-#     "wrkresp",
-
-#     "sclmeet",
-#     "sclact",
-
-#     "trdawrk",
-#     "jbprtfp",
-#     "pfmfdjba",
-
-#     "health",
-#     "hlthhmp",
-
-#     "hhmmb",
-#     "hincfel",
-#     "stfeco",
-
-#     "ipsuces",
-#     "iphlppl",
-#     "ipstrgv",
-#     "trstplc",
-
-# }
