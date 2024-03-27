@@ -24,6 +24,7 @@ url = BASE_URI + 'predict'
 # ADD TITLES AND INTRODUCTION
 st.title('How Happy Are You?')
 st.header('Answer the questions below to find out!')
+st.subheader(" ")
 
 
 # Initialize session state
@@ -34,13 +35,17 @@ if 'current_question' not in st.session_state:
 # Gender and Country Questions - 2 on 1 page
 if st.session_state.current_question == 0:
     with st.form("question_form"):
+        st.subheader(" ")
+
+        st.markdown("##### What country do you live in?")
         cntry = st.selectbox('What country do you live in?',
                             ('AL  Albania', 'AT  Austria', 'BE  Belgium', 'BG  Bulgaria', 'CH  Switzerland', 'CY  Cyprus',
                             'CZ  Czechia', 'DE  Germany', 'DK  Denmark', 'EE  Estonia', 'ES  Spain', 'FI  Finland', 'FR  France', 'GB  United Kingdom',
                             'GE  Georgia', 'GR  Greece', 'HR  Croatia', 'HU  Hungary', 'IE  Ireland', 'IL  Israel', 'IS  Iceland',
                             'IT  Italy', 'LT  Lithuania', 'LU  Luxembourg', 'LV  Latvia', 'ME  Montenegro', 'MK  North Macedonia', 'NL  Netherlands',
                             'NO  Norway', 'PL  Poland', 'PT  Portugal', 'RO  Romania', 'RS  Serbia', 'RU  Russian Federation',
-                            'SE  Sweden', 'SI  Slovenia', 'SK  Slovakia', 'TR  Turkey', 'UA  Ukraine', 'XK  Kosovo'))
+                            'SE  Sweden', 'SI  Slovenia', 'SK  Slovakia', 'TR  Turkey', 'UA  Ukraine', 'XK  Kosovo'),
+                            label_visibility="collapsed")
         cntry_mapping = {
                         'AL  Albania': 'AL', 'AT  Austria': 'AT', 'BE  Belgium': 'BE', 'BG  Bulgaria': 'BG', 'CH  Switzerland': 'CH', 'CY  Cyprus': 'CY',
                         'CZ  Czechia': 'CZ', 'DE  Germany': 'DE', 'DK  Denmark': 'DK', 'EE  Estonia': 'EE', 'ES  Spain': 'ES', 'FI  Finland': 'FI', 'FR  France': 'FR', 'GB  United Kingdom': 'GB',
@@ -51,18 +56,25 @@ if st.session_state.current_question == 0:
                         }
         st.session_state.cntry = cntry_mapping[cntry]
 
-        gndr = st.radio('What is your gender:',
-                        ['Male', 'Female'])
+        st.divider()
+
+        st.markdown("##### What is your gender?")
+        gndr = st.radio('What is your gender?',
+                        ['Male', 'Female'],
+                        label_visibility="collapsed")
         gndr_mapping = {
             "Male": 1,
             "Female": 2,
             }
         st.session_state.gndr = gndr_mapping[gndr]
 
+        st.divider()
+
         submit = st.form_submit_button("Next")
         if submit:
             st.session_state.current_question += 1
             st.experimental_rerun()
+
 
 
 # Job Questions - 5 on 1 page
@@ -170,9 +182,14 @@ elif st.session_state.current_question == 1:
         st.session_state.wrkresp = wrkresp_mapping[wrkresp]
 
         submit = st.form_submit_button("Next")
+        back = st.form_submit_button("Previous")
+        if back:
+            st.session_state.current_question -= 1
+            st.experimental_rerun()
         if submit:
             st.session_state.current_question += 1
             st.experimental_rerun()
+
 
 
 # Social Questions - 2 on 1 page
@@ -208,9 +225,14 @@ elif st.session_state.current_question == 2:
         st.session_state.sclact = sclact_mapping[sclact]
 
         submit = st.form_submit_button("Next")
+        back = st.form_submit_button("Previous")
+        if back:
+            st.session_state.current_question -= 1
+            st.experimental_rerun()
         if submit:
             st.session_state.current_question += 1
             st.experimental_rerun()
+
 
 
 # Job Affecting Social Life Questions - 3 on 1 page
@@ -259,9 +281,14 @@ elif st.session_state.current_question == 3:
 
 
         submit = st.form_submit_button("Next")
+        back = st.form_submit_button("Previous")
+        if back:
+            st.session_state.current_question -= 1
+            st.experimental_rerun()
         if submit:
             st.session_state.current_question += 1
             st.experimental_rerun()
+
 
 
 # Health Questions - 2 on 1 page
@@ -282,7 +309,7 @@ elif st.session_state.current_question == 4:
         st.session_state.health = health_mapping[health]
 
         # 2 health affecting life
-        hlthhmp = st.radio('How would you describe your subjective general health?',
+        hlthhmp = st.radio('Are you hampered in daily activities by illness/disability/infirmity/mental problem?',
                             ["Yes a lot", "Yes to some extent", "No"],
                             horizontal=True)
         hlthhmp_mapping = {
@@ -294,35 +321,102 @@ elif st.session_state.current_question == 4:
 
 
         submit = st.form_submit_button("Next")
+        back = st.form_submit_button("Previous")
+        if back:
+            st.session_state.current_question -= 1
+            st.experimental_rerun()
         if submit:
             st.session_state.current_question += 1
             st.experimental_rerun()
 
 
-#     "hhmmb":    "Number of people living regularly as member of household",
-#     "hincfel":  "Feeling about household's income nowadays",
-#     "stfeco":   "How satisfied with present state of economy in country",
 
 # Household and Income Questions - 3 on 1 page
 elif st.session_state.current_question == 5:
     with st.form("question_form"):
-        st.session_state.health = st.number_input('Subjective general health:')
+
+        # 1 Number of people in household
+        st.session_state.hhmmb = st.number_input('How many people do you have in your household?',
+                                                 min_value=1, max_value=None, value='min', step=1)
+
+        # 2 Household income
+        hincfel = st.radio("How do you feel about your household's current income?", # MAYBE SELECT_SLIDER
+                           ["Living comfortably on present income", "Coping on present income", "Difficult on present income", "Very difficult on present income"],
+                           horizontal=True)
+        hincfel_mapping = {
+            "Living comfortably on present income": 1,
+            "Coping on present income": 2,
+            "Difficult on present income": 3,
+            "Very difficult on present income": 4
+        }
+        st.session_state.hincfel = hincfel_mapping[hincfel]
+
+        # 3 Country economy
+        stfeco = st.select_slider(
+                    "How satisfied are you with the present state of your country's economy?",
+                    options=['Extremely dissatisfied', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'Extremely satisfied'],
+                    )
+        stfeco_mapping = {
+            "Extremely dissatisfied": 0,
+            "1": 1,
+            "2": 2,
+            "3": 3,
+            "4": 4,
+            "5": 5,
+            "6": 6,
+            "7": 7,
+            "8": 8,
+            "9": 9,
+            "Extremely satisfied": 10,
+            }
+        st.session_state.stfeco = stfeco_mapping[stfeco]
+
         submit = st.form_submit_button("Next")
+        back = st.form_submit_button("Previous")
+        if back:
+            st.session_state.current_question -= 1
+            st.experimental_rerun()
         if submit:
             st.session_state.current_question += 1
             st.experimental_rerun()
 
-# elif st.session_state.current_question == 6:
-#     with st.form("question_form"):
-#         st.session_state.rlgdgr = st.number_input('How religious are you:')
-#         submit = st.form_submit_button("Next")
-#         if submit:
-#             st.session_state.current_question += 1
-#             st.experimental_rerun()
+
+#     "ipsuces":  "Important to be successful and that people recognise achievements",
+#     "iphlppl":  "Important to help people and care for others well-being",
+#     "ipstrgv":  "Important that government is strong and ensures safety",
+#     "trstplc":  "Trust in the police",
+
+# Societal Values Questions - 4 on 1 page
+elif st.session_state.current_question == 6:
+    with st.form("question_form"):
+        st.session_state.rlgdgr = st.number_input('How religious are you:')
+
+        submit = st.form_submit_button("Next")
+        back = st.form_submit_button("Previous")
+        if back:
+            st.session_state.current_question -= 1
+            st.experimental_rerun()
+        if submit:
+            st.session_state.current_question += 1
+            st.experimental_rerun()
 
 
-# TODO INPLEMENT PROGRESS BAR
-# FIRST TIME SLOW BC IT'S IMPLEMENTING THE CONTAINER
+# TODO MAKE START PAGE / WELCOME PAGE BEFORE QUESTIONNAIRE
+
+# TODO change text size of questions - make subtitles?
+
+# TODO SWAP ASC/DESC ORDER OF SOME QUESTIONS
+
+# TODO MAKE TOGGLE WORK
+
+# TODO place previous and next buttons better on page
+
+# Final Page
+# TODO INPLEMENT PROGRESS BAR - for loading response
+#      FIRST TIME SLOW BC IT'S IMPLEMENTING THE CONTAINER
+# TODO collapse / hide submit button after submitting
+
+# change order of params dict
 
 
 # display final result
@@ -356,7 +450,7 @@ elif st.session_state.current_question == 11:
                 cntry=st.session_state.cntry,
             )
 
-            #wagon_cab_api_url = 'https://taxifare.lewagon.ai/predict'
+
             response = requests.get(url, params=params)
 
             prediction = response.json()
@@ -364,6 +458,8 @@ elif st.session_state.current_question == 11:
             pred = prediction#['happy'] # STATE OF HAPPINESS
 
             st.text(pred)
+
+
 
 
 # TODO: retrieve the results
@@ -408,10 +504,42 @@ elif st.session_state.current_question == 11:
 #     "hincfel":  "Feeling about household's income nowadays",
 #     "stfeco":   "How satisfied with present state of economy in country",
 
-#     "iphlppl":  "Important to help people and care for others well-being",
 #     "ipsuces":  "Important to be successful and that people recognise achievements",
+#     "iphlppl":  "Important to help people and care for others well-being",
 #     "ipstrgv":  "Important that government is strong and ensures safety",
 #     "trstplc":  "Trust in the police",
 
 # #    "happy":    "Happiness"
+# }
+
+
+# FEATURES_DICT = {
+#     "cntry",
+#     "gndr",
+
+#     "stfmjob",
+#     "dcsfwrka",
+#     "wrkhome",
+#     "wrklong",
+#     "wrkresp",
+
+#     "sclmeet",
+#     "sclact",
+
+#     "trdawrk",
+#     "jbprtfp",
+#     "pfmfdjba",
+
+#     "health",
+#     "hlthhmp",
+
+#     "hhmmb",
+#     "hincfel",
+#     "stfeco",
+
+#     "ipsuces",
+#     "iphlppl",
+#     "ipstrgv",
+#     "trstplc",
+
 # }
