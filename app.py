@@ -32,11 +32,15 @@ if 'current_question' not in st.session_state:
     st.session_state.current_question = 0
 
 
+# Start Page ?
+
+
 # Gender and Country Questions - 2 on 1 page
 if st.session_state.current_question == 0:
     with st.form("question_form"):
         st.subheader(" ")
 
+        # 1 Country
         st.markdown("##### What country do you live in?")
         cntry = st.selectbox('What country do you live in?',
                             ('AL  Albania', 'AT  Austria', 'BE  Belgium', 'BG  Bulgaria', 'CH  Switzerland', 'CY  Cyprus',
@@ -58,6 +62,7 @@ if st.session_state.current_question == 0:
 
         st.divider()
 
+        # 2 Gender
         st.markdown("##### What is your gender?")
         gndr = st.radio('What is your gender?',
                         ['Male', 'Female'],
@@ -80,6 +85,7 @@ if st.session_state.current_question == 0:
 # Job Questions - 5 on 1 page
 elif st.session_state.current_question == 1:
     with st.form("question_form"):
+        st.subheader(" ")
 
         if "disabled" not in st.session_state:
             st.session_state.disabled = False
@@ -91,12 +97,18 @@ elif st.session_state.current_question == 1:
         #         st.session_state.disabled = False
 
         # 1 job satisfaction
+        st.markdown("##### How satisfied are you in your main job?")
+        st.markdown(" ")
+
         pnts_on = st.toggle('Prefer not to say', key="disabled")
+
+        st.markdown(" ")
 
         stfmjob = st.select_slider(
                     'How satisfied are you in your main job?',
                     options=['Extremely dissatisfied', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'Extremely satisfied'],
-                    disabled=st.session_state.disabled)
+                    disabled=st.session_state.disabled,
+                    label_visibility="collapsed")
         stfmjob_mapping = {
             "Extremely dissatisfied": 0,
             "1": 1,
@@ -120,13 +132,15 @@ elif st.session_state.current_question == 1:
         else:
             st.session_state.stfmjob = stfmjob_mapping[stfmjob]
 
-
-
+        st.divider()
 
         # 2 job start/finish
+        st.markdown(" ")
+        st.markdown("##### In your current job can you decide the start and/or finish time of your work?")
         dcsfwrka = st.selectbox(
                     'In your current job can you decide the start and/or finish time of your work?',
-                    options=["Not at all", "To some extent", "Completely", "Prefer not to say"])
+                    options=["Not at all", "To some extent", "Completely", "Prefer not to say"],
+                    label_visibility="collapsed")
         dcsfwrka_mapping = {
             "Not at all": 1,
             "To some extent": 2,
@@ -135,10 +149,15 @@ elif st.session_state.current_question == 1:
         }
         st.session_state.dcsfwrka = dcsfwrka_mapping[dcsfwrka]
 
+        st.divider()
+
         # 3 work from home
+        st.markdown(" ")
+        st.markdown("##### How often do you work from home or from a place of your choice?")
         wrkhome = st.selectbox(
                     'How often do you work from home or from a place of your choice?',
-                    options=["Every day", "Several times a week", "Several times a month", "Once a month", "Less often", "Never", "Prefer not to say"])
+                    options=["Never", "Less often", "Once a month", "Several times a month", "Several times a week", "Every day", "Prefer not to say"],
+                    label_visibility="collapsed")
         wrkhome_mapping = {
             "Every day": 1,
             "Several times a week": 2,
@@ -150,10 +169,15 @@ elif st.session_state.current_question == 1:
         }
         st.session_state.wrkhome = wrkhome_mapping[wrkhome]
 
+        st.divider()
+
         # 4 work after hours
+        st.markdown(" ")
+        st.markdown("##### How often are employees expected to work overtime?")
         wrklong = st.selectbox(
                     'How often are employees expected to work overtime?',
-                    options=["Every day", "Several times a week", "Several times a month", "Once a month", "Less often", "Never", "I don't work in an organisation", "Prefer not to say"])
+                    options=["Never", "Less often", "Once a month", "Several times a month", "Several times a week", "Every day", "I don't work in an organisation", "Prefer not to say"],
+                    label_visibility="collapsed")
         wrklong_mapping = {
             "Every day": 1,
             "Several times a week": 2,
@@ -166,10 +190,15 @@ elif st.session_state.current_question == 1:
         }
         st.session_state.wrklong = wrklong_mapping[wrklong]
 
+        st.divider()
+
         # 5 contact after work hours
+        st.markdown(" ")
+        st.markdown("##### How often are employees expected to work overtime?")
         wrkresp = st.selectbox(
                     'How often are employees expected to work overtime?',
-                    options=["Every day", "Several times a week", "Several times a month", "Once a month", "Less often", "Never", "Prefer not to say"])
+                    options=["Never", "Less often", "Once a month", "Several times a month", "Several times a week", "Every day", "Prefer not to say"],
+                    label_visibility="collapsed")
         wrkresp_mapping = {
             "Every day": 1,
             "Several times a week": 2,
@@ -180,6 +209,8 @@ elif st.session_state.current_question == 1:
             "Prefer not to say": 66
         }
         st.session_state.wrkresp = wrkresp_mapping[wrkresp]
+
+        st.divider()
 
         submit = st.form_submit_button("Next")
         back = st.form_submit_button("Previous")
@@ -195,11 +226,15 @@ elif st.session_state.current_question == 1:
 # Social Questions - 2 on 1 page
 elif st.session_state.current_question == 2:
     with st.form("question_form"):
+        st.subheader(" ")
 
         # 1 Socially meet
-        sclmeet = st.selectbox(
+        st.markdown("##### How often do you meet with friends, relatives or colleagues?")
+        st.markdown(" ")
+        sclmeet = st.select_slider(
                         'How often do you meet with friends, relatives or colleagues?',
-                        options=["Every day", "Several times a week", "Several times a month", "Once a month", "Less often", "Never", "Prefer not to say"])
+                        options=["Never", "Less often", "Once a month", "Several times a month", "Several times a week", "Every day"],
+                        label_visibility="collapsed")
         sclmeet_mapping = {
             "Every day": 7,
             "Several times a week": 6,
@@ -211,10 +246,16 @@ elif st.session_state.current_question == 2:
         }
         st.session_state.sclmeet = sclmeet_mapping[sclmeet]
 
+        st.divider()
+
         # 2 Social Activities
+        st.markdown(" ")
+        st.markdown("##### How often do you take part in social activities compared to others your age?")
+        st.markdown(" ")
         sclact = st.select_slider(
                         'How often do you take part in social activities compared to others your age?',
-                        options=["Much less than most", "Less than most", "About the same", "More than most", "Much more than most"])
+                        options=["Much less than most", "Less than most", "About the same", "More than most", "Much more than most"],
+                        label_visibility="collapsed")
         sclact_mapping = {
             "Much less than most": 1,
             "Less than most": 2,
@@ -223,6 +264,8 @@ elif st.session_state.current_question == 2:
             "Much more than most": 5
         }
         st.session_state.sclact = sclact_mapping[sclact]
+
+        st.divider()
 
         submit = st.form_submit_button("Next")
         back = st.form_submit_button("Previous")
@@ -238,10 +281,13 @@ elif st.session_state.current_question == 2:
 # Job Affecting Social Life Questions - 3 on 1 page
 elif st.session_state.current_question == 3:
     with st.form("question_form"):
+        st.subheader(" ")
 
         # 1 Job affecting home
+        st.markdown("##### How often are you too tired after work to enjoy doing things at home?")
         trdawrk = st.selectbox('How often are you too tired after work to enjoy doing things at home?',
-                            ("Never", "Hardly ever", "Sometimes", "Often", "Always", "Prefer not to say",))
+                            ("Never", "Hardly ever", "Sometimes", "Often", "Always", "Prefer not to say"),
+                            label_visibility="collapsed")
         trdawrk_mapping = {
             "Never": 1,
             "Hardly ever": 2,
@@ -252,9 +298,13 @@ elif st.session_state.current_question == 3:
         }
         st.session_state.trdawrk = trdawrk_mapping[trdawrk]
 
+        st.divider()
+
         # 2 Job affecting family
+        st.markdown("##### How often does your job prevent you from giving time to your partner/family?")
         jbprtfp = st.selectbox('How often does your job prevent you from giving time to your partner/family?',
-                            ("Never", "Hardly ever", "Sometimes", "Often", "Always", "I don't have a partner/family", "Prefer not to say",))
+                                ("Never", "Hardly ever", "Sometimes", "Often", "Always", "I don't have a partner/family", "Prefer not to say"),
+                                label_visibility="collapsed")
         jbprtfp_mapping = {
             "Never": 1,
             "Hardly ever": 2,
@@ -266,9 +316,13 @@ elif st.session_state.current_question == 3:
         }
         st.session_state.jbprtfp = jbprtfp_mapping[jbprtfp]
 
+        st.divider()
+
         # 3 Family dislike your job
+        st.markdown("##### How often is your partner/family fed up with the pressure of your job?")
         pfmfdjba = st.selectbox('How often is your partner/family fed up with the pressure of your job?',
-                            ("Never", "Hardly ever", "Sometimes", "Often", "Always", "Prefer not to say",))
+                            ("Never", "Hardly ever", "Sometimes", "Often", "Always", "Prefer not to say"),
+                            label_visibility="collapsed")
         pfmfdjba_mapping = {
             "Never": 1,
             "Hardly ever": 2,
@@ -278,6 +332,8 @@ elif st.session_state.current_question == 3:
             "Prefer not to say": 6
         }
         st.session_state.pfmfdjba = pfmfdjba_mapping[pfmfdjba]
+
+        st.divider()
 
 
         submit = st.form_submit_button("Next")
@@ -294,11 +350,15 @@ elif st.session_state.current_question == 3:
 # Health Questions - 2 on 1 page
 elif st.session_state.current_question == 4:
     with st.form("question_form"):
+        st.subheader(" ")
 
         # 1 General Health
+        st.markdown("##### How would you describe your subjective general health?")
+        st.markdown(" ")
         health = st.radio('How would you describe your subjective general health?', # MAYBE SELECT_SLIDER
-                           ["Very good", "Good", "Fair", "Bad", "Very bad"],
-                           horizontal=True)
+                           ["Very bad", "Bad", "Fair", "Good", "Very good"],
+                           horizontal=True,
+                           label_visibility="collapsed")
         health_mapping = {
             "Very good": 1,
             "Good": 2,
@@ -308,16 +368,23 @@ elif st.session_state.current_question == 4:
         }
         st.session_state.health = health_mapping[health]
 
+        st.divider()
+
         # 2 health affecting life
+        st.markdown("##### Are you hampered in daily activities by illness/disability/infirmity/mental problem?")
+        st.markdown(" ")
         hlthhmp = st.radio('Are you hampered in daily activities by illness/disability/infirmity/mental problem?',
-                            ["Yes a lot", "Yes to some extent", "No"],
-                            horizontal=True)
+                            ["No", "Yes to some extent", "Yes a lot"],
+                            horizontal=True,
+                            label_visibility="collapsed")
         hlthhmp_mapping = {
             "Yes a lot": 1,
             "Yes to some extent": 2,
             "No": 3
         }
         st.session_state.hlthhmp = hlthhmp_mapping[hlthhmp]
+
+        st.divider()
 
 
         submit = st.form_submit_button("Next")
@@ -334,15 +401,22 @@ elif st.session_state.current_question == 4:
 # Household and Income Questions - 3 on 1 page
 elif st.session_state.current_question == 5:
     with st.form("question_form"):
+        st.subheader(" ")
 
         # 1 Number of people in household
+        st.markdown("##### How many people do you have in your household?")
         st.session_state.hhmmb = st.number_input('How many people do you have in your household?',
-                                                 min_value=1, max_value=None, value='min', step=1)
+                                                 min_value=1, max_value=None, value='min', step=1,
+                                                 label_visibility="collapsed")
+
+        st.divider()
 
         # 2 Household income
-        hincfel = st.radio("How do you feel about your household's current income?", # MAYBE SELECT_SLIDER
-                           ["Living comfortably on present income", "Coping on present income", "Difficult on present income", "Very difficult on present income"],
-                           horizontal=True)
+        st.markdown("##### How do you feel about your household's current income?")
+        st.markdown(" ")
+        hincfel = st.select_slider("How do you feel about your household's current income?",
+                           ["Very difficult on present income", "Difficult on present income", "Coping on present income", "Living comfortably on present income"],
+                           label_visibility="collapsed")
         hincfel_mapping = {
             "Living comfortably on present income": 1,
             "Coping on present income": 2,
@@ -351,11 +425,15 @@ elif st.session_state.current_question == 5:
         }
         st.session_state.hincfel = hincfel_mapping[hincfel]
 
+        st.divider()
+
         # 3 Country economy
+        st.markdown("##### How satisfied are you with the present state of your country's economy?")
+        st.markdown(" ")
         stfeco = st.select_slider(
                     "How satisfied are you with the present state of your country's economy?",
                     options=['Extremely dissatisfied', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'Extremely satisfied'],
-                    )
+                    label_visibility="collapsed")
         stfeco_mapping = {
             "Extremely dissatisfied": 0,
             "1": 1,
@@ -371,6 +449,8 @@ elif st.session_state.current_question == 5:
             }
         st.session_state.stfeco = stfeco_mapping[stfeco]
 
+        st.divider()
+
         submit = st.form_submit_button("Next")
         back = st.form_submit_button("Previous")
         if back:
@@ -381,15 +461,95 @@ elif st.session_state.current_question == 5:
             st.experimental_rerun()
 
 
-#     "ipsuces":  "Important to be successful and that people recognise achievements",
-#     "iphlppl":  "Important to help people and care for others well-being",
-#     "ipstrgv":  "Important that government is strong and ensures safety",
-#     "trstplc":  "Trust in the police",
 
 # Societal Values Questions - 4 on 1 page
 elif st.session_state.current_question == 6:
     with st.form("question_form"):
-        st.session_state.rlgdgr = st.number_input('How religious are you:')
+        st.subheader(" ")
+
+        # 1 Success
+        st.markdown("##### How much do you identify with this statement:")
+        st.markdown("##### 'It is important to be successful and for people to recognise my acheivements.' ")
+        st.markdown(" ")
+        ipsuces = st.select_slider(
+                                "How much do you identify with the statement; it is important to be successful and that people recognise my acheivements?",
+                                options=["Not like me at all", "Not like me", "A little like me", "Somewhat like me", "Like me", "Very much like me"],
+                                label_visibility="collapsed")
+        ipsuces_mapping = {
+            "Very much like me": 1,
+            "Like me": 2,
+            "Somewhat like me": 3,
+            "A little like me": 4,
+            "Not like me": 5,
+            "Not like me at all": 6
+        }
+        st.session_state.ipsuces = ipsuces_mapping[ipsuces]
+
+        st.divider()
+
+        # 2 Help others
+        st.markdown("##### How much do you identify with this statement:")
+        st.markdown("##### 'It is important to help others and care for their wellbeing.' ")
+        st.markdown(" ")
+        iphlppl = st.select_slider(
+                                "How much do you identify with the statement; it is important to help others and care for their welbeing?",
+                                options=["Not like me at all", "Not like me", "A little like me", "Somewhat like me", "Like me", "Very much like me"],
+                                label_visibility="collapsed")
+        iphlppl_mapping = {
+            "Very much like me": 1,
+            "Like me": 2,
+            "Somewhat like me": 3,
+            "A little like me": 4,
+            "Not like me": 5,
+            "Not like me at all": 6
+        }
+        st.session_state.iphlppl = iphlppl_mapping[iphlppl]
+
+        st.divider()
+
+        # 3 Government help
+        st.markdown("##### How much do you identify with this statement:")
+        st.markdown("##### 'It is important that the government is strong and ensures safety.' ")
+        st.markdown(" ")
+        ipstrgv = st.select_slider(
+                                "It is important that the government is strong and ensures safety.",
+                                options=["Not like me at all", "Not like me", "A little like me", "Somewhat like me", "Like me", "Very much like me"],
+                                label_visibility="collapsed")
+        ipstrgv_mapping = {
+            "Very much like me": 1,
+            "Like me": 2,
+            "Somewhat like me": 3,
+            "A little like me": 4,
+            "Not like me": 5,
+            "Not like me at all": 6
+        }
+        st.session_state.ipstrgv = ipstrgv_mapping[ipstrgv]
+
+        st.divider()
+
+        # 4 Police trust
+        st.markdown("##### How much trust do you have in the Police?")
+        st.markdown(" ")
+        trstplc = st.select_slider(
+                                "It is important that the government is strong and ensures safety.",
+                                options=["No trust at all", "1", "2", "3", "4", "5", "6", "7", "8", "9", "Complete trust"],
+                                label_visibility="collapsed")
+        trstplc_mapping = {
+            "No trust at all": 0,
+            "1": 1,
+            "2": 2,
+            "3": 3,
+            "4": 4,
+            "5": 5,
+            "6": 6,
+            "7": 7,
+            "8": 8,
+            "9": 9,
+            "Complete trust": 10
+        }
+        st.session_state.trstplc = trstplc_mapping[trstplc]
+
+        st.divider()
 
         submit = st.form_submit_button("Next")
         back = st.form_submit_button("Previous")
@@ -401,15 +561,15 @@ elif st.session_state.current_question == 6:
             st.experimental_rerun()
 
 
+
 # TODO MAKE START PAGE / WELCOME PAGE BEFORE QUESTIONNAIRE
 
-# TODO change text size of questions - make subtitles?
 
-# TODO SWAP ASC/DESC ORDER OF SOME QUESTIONS
+# TODO Page Formatting
+#  place previous and next buttons better on page
+#  MAKE TOGGLE WORK
+#  REFORMAT jobs questions - all sliders?
 
-# TODO MAKE TOGGLE WORK
-
-# TODO place previous and next buttons better on page
 
 # Final Page
 # TODO INPLEMENT PROGRESS BAR - for loading response
