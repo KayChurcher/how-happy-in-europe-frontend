@@ -32,11 +32,19 @@ if 'current_question' not in st.session_state:
     st.session_state.current_question = 0
 
 
-# Start Page ?
+# Start Page
+if st.session_state.current_question == 0:
+    with st.form("question_form"):
+
+        submit = st.form_submit_button("Start Questionnaire")
+        if submit:
+            st.session_state.current_question += 1
+            st.experimental_rerun()
+
 
 
 # Gender and Country Questions - 2 on 1 page
-if st.session_state.current_question == 0:
+if st.session_state.current_question == 1:
     with st.form("question_form"):
         st.subheader(" ")
 
@@ -83,7 +91,7 @@ if st.session_state.current_question == 0:
 
 
 # Job Questions - 5 on 1 page
-elif st.session_state.current_question == 1:
+elif st.session_state.current_question == 2:
     with st.form("question_form"):
         st.subheader(" ")
 
@@ -224,7 +232,7 @@ elif st.session_state.current_question == 1:
 
 
 # Social Questions - 2 on 1 page
-elif st.session_state.current_question == 2:
+elif st.session_state.current_question == 3:
     with st.form("question_form"):
         st.subheader(" ")
 
@@ -279,7 +287,7 @@ elif st.session_state.current_question == 2:
 
 
 # Job Affecting Social Life Questions - 3 on 1 page
-elif st.session_state.current_question == 3:
+elif st.session_state.current_question == 4:
     with st.form("question_form"):
         st.subheader(" ")
 
@@ -348,7 +356,7 @@ elif st.session_state.current_question == 3:
 
 
 # Health Questions - 2 on 1 page
-elif st.session_state.current_question == 4:
+elif st.session_state.current_question == 5:
     with st.form("question_form"):
         st.subheader(" ")
 
@@ -399,7 +407,7 @@ elif st.session_state.current_question == 4:
 
 
 # Household and Income Questions - 3 on 1 page
-elif st.session_state.current_question == 5:
+elif st.session_state.current_question == 6:
     with st.form("question_form"):
         st.subheader(" ")
 
@@ -463,7 +471,7 @@ elif st.session_state.current_question == 5:
 
 
 # Societal Values Questions - 4 on 1 page
-elif st.session_state.current_question == 6:
+elif st.session_state.current_question == 7:
     with st.form("question_form"):
         st.subheader(" ")
 
@@ -576,38 +584,38 @@ elif st.session_state.current_question == 6:
 #      FIRST TIME SLOW BC IT'S IMPLEMENTING THE CONTAINER
 # TODO collapse / hide submit button after submitting
 
-# change order of params dict
 
 
 # display final result
-elif st.session_state.current_question == 11:
+elif st.session_state.current_question == 8:
     with st.form("prediction_form"):
-        submit = st.form_submit_button("Submit")
+        submit = st.form_submit_button("Submit your Answers")
         if submit:
             st.write("Thank you for completing the questionnaire!")
             st.session_state.current_question = 0 # Reset for next time
 
             params = dict(
+                cntry=st.session_state.cntry,
+                gndr=st.session_state.gndr,
                 stfmjob=st.session_state.stfmjob,
-                trdawrk=st.session_state.trdawrk,
-                jbprtfp=st.session_state.jbprtfp,
-                pfmfdjba=st.session_state.pfmfdjba,
                 dcsfwrka=st.session_state.dcsfwrka,
                 wrkhome=st.session_state.wrkhome,
                 wrklong=st.session_state.wrklong,
                 wrkresp=st.session_state.wrkresp,
+                sclmeet=st.session_state.sclmeet,
+                sclact=st.session_state.sclact,
+                trdawrk=st.session_state.trdawrk,
+                jbprtfp=st.session_state.jbprtfp,
+                pfmfdjba=st.session_state.pfmfdjba,
                 health=st.session_state.health,
-                stfeco=st.session_state.stfeco,
+                hlthhmp=st.session_state.hlthhmp,
                 hhmmb=st.session_state.hhmmb,
                 hincfel=st.session_state.hincfel,
-                trstplc=st.session_state.trstplc,
-                sclmeet=st.session_state.sclmeet,
-                hlthhmp=st.session_state.hlthhmp,
-                iphlppl=st.session_state.iphlppl,
+                stfeco=st.session_state.stfeco,
                 ipsuces=st.session_state.ipsuces,
+                iphlppl=st.session_state.iphlppl,
                 ipstrgv=st.session_state.ipstrgv,
-                gndr=st.session_state.gndr,
-                cntry=st.session_state.cntry,
+                trstplc=st.session_state.trstplc,
             )
 
 
