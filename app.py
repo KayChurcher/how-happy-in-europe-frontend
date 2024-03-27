@@ -17,9 +17,9 @@ url = BASE_URI + 'predict'
 
 # TODO EDIT URL FOR FINAL MODEL
 
-"""
-Below is preparation for final model.
-"""
+# """
+# Below is preparation for final model.
+# """
 
 # ADD TITLES AND INTRODUCTION
 st.title('How Happy Are You?')
@@ -52,12 +52,11 @@ if st.session_state.current_question == 0:
         st.session_state.cntry = cntry_mapping[cntry]
 
         gndr = st.radio('What is your gender:',
-                    ['Male', 'Female', 'Prefer not to say'])
+                        ['Male', 'Female'])
         gndr_mapping = {
             "Male": 1,
             "Female": 2,
-            "Prefer not to say": 6 # UPDATED GNDR FROM JSON
-        }
+            }
         st.session_state.gndr = gndr_mapping[gndr]
 
         submit = st.form_submit_button("Next")
@@ -70,10 +69,22 @@ if st.session_state.current_question == 0:
 elif st.session_state.current_question == 1:
     with st.form("question_form"):
 
+        if "disabled" not in st.session_state:
+            st.session_state.disabled = False
+
+        # def switchToggle():
+        #     if st.session_state.disabled == False:
+        #         st.session_state.disabled = True
+        #     else:
+        #         st.session_state.disabled = False
+
         # 1 job satisfaction
+        pnts_on = st.toggle('Prefer not to say', key="disabled")
+
         stfmjob = st.select_slider(
                     'How satisfied are you in your main job?',
-                    options=['Extremely dissatisfied', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'Extremely satisfied'])
+                    options=['Extremely dissatisfied', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'Extremely satisfied'],
+                    disabled=st.session_state.disabled)
         stfmjob_mapping = {
             "Extremely dissatisfied": 0,
             "1": 1,
@@ -89,13 +100,16 @@ elif st.session_state.current_question == 1:
             "Prefer not to say": 66    # add toggle with prefer not to say option?
             }
 
-        pnts_on = st.toggle('Prefer not to say', key="disabled")
 
         if pnts_on:
-            st.session_state.gstfmjob = stfmjob_mapping[pnts_on]
-            stfmjob = st.select_slider(disabled=st.session_state.disabled) # visibility of stfmjob = off
+            st.session_state.stfmjob = stfmjob_mapping[pnts_on]
+            #stfmjob.session_state.disabled
+            #stfmjob = st.select_slider(disabled=st.session_state.disabled) # visibility of stfmjob = off
         else:
-            st.session_state.gstfmjob = stfmjob_mapping[stfmjob]
+            st.session_state.stfmjob = stfmjob_mapping[stfmjob]
+
+
+
 
         # 2 job start/finish
         dcsfwrka = st.selectbox(
@@ -199,54 +213,104 @@ elif st.session_state.current_question == 2:
             st.experimental_rerun()
 
 
-#     "trdawrk":  "Too tired after work to enjoy things like doing at home, how often",
-#     "jbprtfp":  "Job prevents you from giving time to partner/family, how often",
-#     "pfmfdjba": "Partner/family fed up with pressure of your job, how often",
-
 # Job Affecting Social Life Questions - 3 on 1 page
 elif st.session_state.current_question == 3:
     with st.form("question_form"):
-        inprdsc = st.selectbox('How many people with whom you can discuss intimate and personal matters:',
-                            ('None', '1', '2', '3', '4-6', '7-9', '10 or more')) # THE CORRESPONDING VALUES ARE 0-6
-        inprdsc_mapping = {
-            'None': 0,
-            '1': 1,
-            '2': 2,
-            '3': 3,
-            '4-6': 4,
-            '7-9': 5,
-            '10 or more': 6
+
+        # 1 Job affecting home
+        trdawrk = st.selectbox('How often are you too tired after work to enjoy doing things at home?',
+                            ("Never", "Hardly ever", "Sometimes", "Often", "Always", "Prefer not to say",))
+        trdawrk_mapping = {
+            "Never": 1,
+            "Hardly ever": 2,
+            "Sometimes": 3,
+            "Often": 4,
+            "Always": 5,
+            "Prefer not to say": 6
         }
-        st.session_state.inprdsc = inprdsc_mapping[inprdsc]
+        st.session_state.trdawrk = trdawrk_mapping[trdawrk]
+
+        # 2 Job affecting family
+        jbprtfp = st.selectbox('How often does your job prevent you from giving time to your partner/family?',
+                            ("Never", "Hardly ever", "Sometimes", "Often", "Always", "I don't have a partner/family", "Prefer not to say",))
+        jbprtfp_mapping = {
+            "Never": 1,
+            "Hardly ever": 2,
+            "Sometimes": 3,
+            "Often": 4,
+            "Always": 5,
+            "I don't have a partner/family": 6,
+            "Prefer not to say": 66
+        }
+        st.session_state.jbprtfp = jbprtfp_mapping[jbprtfp]
+
+        # 3 Family dislike your job
+        pfmfdjba = st.selectbox('How often is your partner/family fed up with the pressure of your job?',
+                            ("Never", "Hardly ever", "Sometimes", "Often", "Always", "Prefer not to say",))
+        pfmfdjba_mapping = {
+            "Never": 1,
+            "Hardly ever": 2,
+            "Sometimes": 3,
+            "Often": 4,
+            "Always": 5,
+            "Prefer not to say": 6
+        }
+        st.session_state.pfmfdjba = pfmfdjba_mapping[pfmfdjba]
+
+
         submit = st.form_submit_button("Next")
         if submit:
             st.session_state.current_question += 1
             st.experimental_rerun()
 
-# elif st.session_state.current_question == 4:
-#     with st.form("question_form"):
-#         sclact = st.selectbox('Take part in social activites compared to others of same age:',
-#                             ('Much less than most', 'Less than most', 'About the same', 'More than most', 'Much more than most'))
-#         sclact_mapping = {
-#             'Much less than most': 1,
-#             'Less than most': 2,
-#             'About the same': 3,
-#             'More than most': 4,
-#             'Much more than most': 5
-#         }
-#         st.session_state.sclact = sclact_mapping[sclact]
-#         submit = st.form_submit_button("Next")
-#         if submit:
-#             st.session_state.current_question += 1
-#             st.experimental_rerun()
 
-# elif st.session_state.current_question == 5:
-#     with st.form("question_form"):
-#         st.session_state.health = st.number_input('Subjective general health:')
-#         submit = st.form_submit_button("Next")
-#         if submit:
-#             st.session_state.current_question += 1
-#             st.experimental_rerun()
+# Health Questions - 2 on 1 page
+elif st.session_state.current_question == 4:
+    with st.form("question_form"):
+
+        # 1 General Health
+        health = st.radio('How would you describe your subjective general health?', # MAYBE SELECT_SLIDER
+                           ["Very good", "Good", "Fair", "Bad", "Very bad"],
+                           horizontal=True)
+        health_mapping = {
+            "Very good": 1,
+            "Good": 2,
+            "Fair": 3,
+            "Bad": 4,
+            "Very bad": 5
+        }
+        st.session_state.health = health_mapping[health]
+
+        # 2 health affecting life
+        hlthhmp = st.radio('How would you describe your subjective general health?',
+                            ["Yes a lot", "Yes to some extent", "No"],
+                            horizontal=True)
+        hlthhmp_mapping = {
+            "Yes a lot": 1,
+            "Yes to some extent": 2,
+            "No": 3
+        }
+        st.session_state.hlthhmp = hlthhmp_mapping[hlthhmp]
+
+
+        submit = st.form_submit_button("Next")
+        if submit:
+            st.session_state.current_question += 1
+            st.experimental_rerun()
+
+
+#     "hhmmb":    "Number of people living regularly as member of household",
+#     "hincfel":  "Feeling about household's income nowadays",
+#     "stfeco":   "How satisfied with present state of economy in country",
+
+# Household and Income Questions - 3 on 1 page
+elif st.session_state.current_question == 5:
+    with st.form("question_form"):
+        st.session_state.health = st.number_input('Subjective general health:')
+        submit = st.form_submit_button("Next")
+        if submit:
+            st.session_state.current_question += 1
+            st.experimental_rerun()
 
 # elif st.session_state.current_question == 6:
 #     with st.form("question_form"):
@@ -257,6 +321,8 @@ elif st.session_state.current_question == 3:
 #             st.experimental_rerun()
 
 
+# TODO INPLEMENT PROGRESS BAR
+# FIRST TIME SLOW BC IT'S IMPLEMENTING THE CONTAINER
 
 
 # display final result
@@ -288,7 +354,6 @@ elif st.session_state.current_question == 11:
                 ipstrgv=st.session_state.ipstrgv,
                 gndr=st.session_state.gndr,
                 cntry=st.session_state.cntry,
-                happy=st.session_state.happy # <- SHOULD THIS STILL BE HERE??
             )
 
             #wagon_cab_api_url = 'https://taxifare.lewagon.ai/predict'
@@ -318,7 +383,7 @@ elif st.session_state.current_question == 11:
 
 # TODO PROCESS AND MAP FEATURES
 
-
+# happy=st.session_state.happy # <- SHOULD THIS STILL BE HERE??
 # FEATURES_DICT = {
 #     "gndr"   :  "Gender",
 #     "cntry"  :  "Country",
@@ -339,9 +404,9 @@ elif st.session_state.current_question == 11:
 #     "health":   "Subjective general health",
 #     "hlthhmp":  "Hampered in daily activities by illness/disability/infirmity/mental problem",
 
-#     "stfeco":   "How satisfied with present state of economy in country",
 #     "hhmmb":    "Number of people living regularly as member of household",
 #     "hincfel":  "Feeling about household's income nowadays",
+#     "stfeco":   "How satisfied with present state of economy in country",
 
 #     "iphlppl":  "Important to help people and care for others well-being",
 #     "ipsuces":  "Important to be successful and that people recognise achievements",
