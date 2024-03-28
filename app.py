@@ -615,4 +615,7 @@ elif st.session_state.current_question == 8:
 
             pred = prediction#['happy'] # STATE OF HAPPINESS
 
-            st.text(pred)
+            # st.text(pred)
+
+            # Use markdown with HTML tags to increase the size
+            st.markdown(f'<h2 style="font-size:2em;color:black;">{pred}</h2>', unsafe_allow_html=True)
